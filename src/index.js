@@ -62,7 +62,8 @@ app.post('/contact', (req, res) => {
             return res.status(400).end('Something went wrong.');
         });
     } else {
-        return res.status(400).end('Something went wrong');
+
+        return res.send('hety now youre a rockstart');
     }
 });
 
