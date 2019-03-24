@@ -26,7 +26,7 @@ app.post('/contact', (req, res) => {
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
     
     const information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
-    
+    res.send(information);
     if (information) {
         const transporter = nodemailer.createTransport({
             host: process.env.TRANSPORT_HOST,
