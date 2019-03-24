@@ -33,6 +33,7 @@ app.get('/*', function (req, res) {
 app.post('/contact', function (req, res) {
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
   var information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
+  res.send(information);
 
   if (information) {
     var transporter = _nodemailer.default.createTransport({
@@ -62,7 +63,7 @@ app.post('/contact', function (req, res) {
       return res.status(400).end('Something went wrong.');
     });
   } else {
-    return res.status(400).end('Something went wrong');
+    return res.send('hety now youre a rockstart');
   }
 });
 app.listen(process.env.PORT || 3000, function () {
