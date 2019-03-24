@@ -24,8 +24,10 @@ app.get('/*', (req, res) => {
 
 app.post('/contact', (req, res) => {
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-    const information = JSON.parse(Object.keys(req.body)[0]);
-    if (!information.honey) {
+    
+    const information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
+    
+    if (information) {
         const transporter = nodemailer.createTransport({
             host: process.env.TRANSPORT_HOST,
             port: process.env.TRANSPORT_PORT,
@@ -60,7 +62,7 @@ app.post('/contact', (req, res) => {
             return res.status(400).end('Something went wrong.');
         });
     } else {
-        return;
+        return res.status(400).end('Something went wrong');
     }
 });
 
