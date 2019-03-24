@@ -33,7 +33,6 @@ app.get('/*', function (req, res) {
 app.post('/contact', function (req, res) {
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
   var information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
-  res.send(information);
 
   if (information) {
     var transporter = _nodemailer.default.createTransport({
