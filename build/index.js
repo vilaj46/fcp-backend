@@ -32,7 +32,15 @@ app.get('/*', function (req, res) {
 });
 app.post('/contact', function (req, res) {
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-  var information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
+  var information;
+
+  if (Object.keys(req.body).length > 0) {
+    try {
+      information = JSON.parse(Object.keys(req.body)[0]);
+    } catch (_unused) {
+      return res.status(400).end('Bad information');
+    }
+  }
 
   if (information) {
     var transporter = _nodemailer.default.createTransport({

@@ -24,8 +24,18 @@ app.get('/*', (req, res) => {
 
 app.post('/contact', (req, res) => {
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+    let information;
     
-    const information = Object.keys(req.body).length > 0 ? JSON.parse(Object.keys(req.body)[0]) : null;
+    if (Object.keys(req.body).length > 0) {
+        try {
+            information = JSON.parse(Object.keys(req.body)[0]);
+        }
+        catch {
+            return res.status(400).end('Bad information');
+        }
+        
+    }
+    
     if (information) {
         const transporter = nodemailer.createTransport({
             host: process.env.TRANSPORT_HOST,
