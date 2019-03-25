@@ -83,7 +83,31 @@ app.post('/contact', (req, res) => {
             return res.status(401).json({ error });
         });
     } else {
-        return res.status(400).json({ body: req.body });
+        const contact = {
+            name: req.sanitize(req.body.name),
+            number: req.sanitize(req.body.number),
+            email: req.sanitize(req.body.email),
+            assistance: req.sanitize(req.body.assistance),
+        };
+
+        const mail = {
+            from: contact.email,
+            to: process.env.TRANSPORT_USER,
+            subject: 'Help',
+            text: `
+                ${contact.name}
+                ${contact.email}
+                ${contact.number}
+                ${contact.assistance}
+            `
+        };
+    
+        return transporter.sendMail(mail).then(() => {
+            return res.status('200').json({ mail });
+        }).catch(error => {
+            return res.status(401).json({ error });
+        });
+        // return res.status(400).json({ body: req.body });
     }
 });
 

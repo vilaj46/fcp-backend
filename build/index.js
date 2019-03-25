@@ -62,7 +62,7 @@ app.post('/contact', function (req, res) {
   console.log(information);
 
   if (information) {
-    var transporter = _nodemailer.default.createTransport({
+    var _transporter = _nodemailer.default.createTransport({
       host: process.env.TRANSPORT_HOST,
       port: process.env.TRANSPORT_PORT,
       auth: {
@@ -84,7 +84,7 @@ app.post('/contact', function (req, res) {
       subject: 'Help',
       text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
     };
-    return transporter.sendMail(mail).then(function () {
+    return _transporter.sendMail(mail).then(function () {
       return res.status('200').json({
         mail: mail
       });
@@ -94,9 +94,27 @@ app.post('/contact', function (req, res) {
       });
     });
   } else {
-    return res.status(400).json({
-      body: req.body
-    });
+    var _contact = {
+      name: req.sanitize(req.body.name),
+      number: req.sanitize(req.body.number),
+      email: req.sanitize(req.body.email),
+      assistance: req.sanitize(req.body.assistance)
+    };
+    var _mail = {
+      from: _contact.email,
+      to: process.env.TRANSPORT_USER,
+      subject: 'Help',
+      text: "\n                ".concat(_contact.name, "\n                ").concat(_contact.email, "\n                ").concat(_contact.number, "\n                ").concat(_contact.assistance, "\n            ")
+    };
+    return transporter.sendMail(_mail).then(function () {
+      return res.status('200').json({
+        mail: _mail
+      });
+    }).catch(function (error) {
+      return res.status(401).json({
+        error: error
+      });
+    }); // return res.status(400).json({ body: req.body });
   }
 });
 app.listen(process.env.PORT || 3000, function () {
