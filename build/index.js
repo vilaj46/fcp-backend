@@ -33,19 +33,17 @@ app.get('/*', function (req, res) {
 app.post('/contact', function (req, res) {
   var information;
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-
-  if (Object.keys(req.body)[0].includes('WebKitForm')) {
-    var values = Object.values(req.body);
-    var firstBracket = values[0].indexOf('{');
-    var lastBracket = values[0].lastIndexOf('}') + 1;
-    information = JSON.parse(values[0].slice(firstBracket, lastBracket));
-  } else if (Object.keys(req.body).length > 0) {
-    information = JSON.parse(Object.keys(req.body)[0]);
-  }
-
   res.status(200).json({
-    success: information
-  }); // return res.status('200').end();
+    success: Object.keys(req.body)[0]
+  }); // if (Object.keys(req.body)[0].includes('WebKitForm')) {
+  //     const values = Object.values(req.body);
+  //     const firstBracket = values[0].indexOf('{');
+  //     const lastBracket = values[0].lastIndexOf('}') + 1;
+  //     information = JSON.parse(values[0].slice(firstBracket, lastBracket));
+  // } else if (Object.keys(req.body).length > 0) {
+  //     information = JSON.parse(Object.keys(req.body)[0]);
+  // }
+  // return res.status('200').end();
   // if (information) {
   //     const transporter = nodemailer.createTransport({
   //         host: process.env.TRANSPORT_HOST,
