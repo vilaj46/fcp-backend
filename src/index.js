@@ -27,10 +27,11 @@ app.post('/contact', (req, res) => {
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
     
     if (Object.keys(req.body)[0].includes('WebKitForm')) {
-        res.status(200).json({ success: Object.keys(req.body)[0] });
-        // const values = Object.values(req.body);
-        // const firstBracket = values[0].indexOf('{');
-        // const lastBracket = values[0].lastIndexOf('}') + 1;
+        
+        const values = Object.values(req.body)[0];
+        const firstBracket = values.indexOf('{');
+        const lastBracket = values.lastIndexOf('}') + 1;
+        res.status(200).json({ success: values });
         // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
     }
     // } else if (Object.keys(req.body).length > 0) {

@@ -35,12 +35,12 @@ app.post('/contact', function (req, res) {
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 
   if (Object.keys(req.body)[0].includes('WebKitForm')) {
+    var values = Object.values(req.body)[0];
+    var firstBracket = values.indexOf('{');
+    var lastBracket = values.lastIndexOf('}') + 1;
     res.status(200).json({
-      success: Object.keys(req.body)[0]
-    }); // const values = Object.values(req.body);
-    // const firstBracket = values[0].indexOf('{');
-    // const lastBracket = values[0].lastIndexOf('}') + 1;
-    // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
+      success: values
+    }); // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
   } // } else if (Object.keys(req.body).length > 0) {
   //     information = JSON.parse(Object.keys(req.body)[0]);
   // }
