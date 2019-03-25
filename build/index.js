@@ -43,7 +43,7 @@ app.post('/contact', function (req, res) {
     information = JSON.parse(Object.keys(req.body)[0]);
   }
 
-  res.send(information); // return res.status('200').end();
+  res.send('hey now'); // return res.status('200').end();
   // if (information) {
   //     const transporter = nodemailer.createTransport({
   //         host: process.env.TRANSPORT_HOST,

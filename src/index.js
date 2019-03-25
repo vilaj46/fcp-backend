@@ -34,7 +34,7 @@ app.post('/contact', (req, res) => {
     } else if (Object.keys(req.body).length > 0) {
         information = JSON.parse(Object.keys(req.body)[0]);
     }
-    res.send(information);
+    res.send('hey now');
     // return res.status('200').end();
     // if (information) {
     //     const transporter = nodemailer.createTransport({
