@@ -38,7 +38,7 @@ app.post('/contact', function (req, res) {
     var values = Object.values(req.body)[0];
     var firstBracket = values.indexOf('{');
     var lastBracket = values.lastIndexOf('}') + 1;
-    values = JSON.parse(values.slice(firstBracket, lastBracket).replace('\\', ''));
+    values = values.slice(firstBracket, lastBracket).replace('\\', '');
     res.status(200).json({
       success: values
     }); // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
