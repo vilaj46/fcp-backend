@@ -13,6 +13,7 @@ const app = express();
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(bodyParser.json());
 
 app.use(helmet());
 app.use(cors())
@@ -75,6 +76,7 @@ app.post('/contact', (req, res) => {
             return res.status(401).json({ error });
         });
     } else {
+
         return res.status(400).json({ error });
     }
 });

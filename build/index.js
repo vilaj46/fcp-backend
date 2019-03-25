@@ -24,6 +24,7 @@ var app = (0, _express.default)();
 app.use(_bodyParser.default.urlencoded({
   extended: true
 }));
+app.use(_bodyParser.default.json());
 app.use((0, _helmet.default)());
 app.use((0, _cors.default)());
 app.use((0, _expressSanitizer.default)());
