@@ -76,15 +76,8 @@ app.post('/contact', (req, res) => {
             return res.status(401).json({ error });
         });
     } else {
-        let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-
-        req.on('end', () => {
-            return res.status(400).json({ body });
-        })
-        
+        console.log(req.body);
+        return res.status(400).json({ body: req.body });
     }
 });
 
