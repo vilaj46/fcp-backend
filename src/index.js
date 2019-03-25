@@ -69,7 +69,7 @@ app.post('/contact', (req, res) => {
         };
     
         return transporter.sendMail(mail).then(() => {
-            return res.status('200').json({ mail });
+            return res.status('202').json({ mail });
         }).catch(error => {
             return res.status(400).json({ error });
         });

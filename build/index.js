@@ -70,7 +70,7 @@ app.post('/contact', function (req, res) {
       text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
     };
     return transporter.sendMail(mail).then(function () {
-      return res.status('200').json({
+      return res.status('202').json({
         mail: mail
       });
     }).catch(function (error) {
