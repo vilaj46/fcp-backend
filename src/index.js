@@ -32,10 +32,12 @@ app.post('/contact', (req, res) => {
             const lastBracket = values.lastIndexOf('}') + 1;
             values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
             information = values
+            return res.status(201).json({ success: true });
         } 
     }
     catch {
         information = JSON.parse(Object.keys(req.body)[0]);
+        return res.status(202).json({ success: true });
     }
     if (information) {
         const transporter = nodemailer.createTransport({
@@ -68,44 +70,12 @@ app.post('/contact', (req, res) => {
         };
     
         return transporter.sendMail(mail).then(() => {
-            return res.status('202').json({ mail });
+            return res.status('200').json({ mail });
         }).catch(error => {
-            return res.status(400).json({ error });
+            return res.status(401).json({ error });
         });
     } else {
-        const transporter = nodemailer.createTransport({
-            host: process.env.TRANSPORT_HOST,
-            port: process.env.TRANSPORT_PORT,
-            auth: {
-                user: process.env.TRANSPORT_USER,
-                pass: process.env.TRANSPORT_PASS,
-            }, 
-            secure: true
-        });
-
-        const contact = {
-            name: 'Julian Vila',
-            number: '1234567890',
-            email: 'viljaj46@gmail.com',
-            assistance: 'hey now',
-        };
-
-        const mail = {
-            from: contact.email,
-            to: process.env.TRANSPORT_USER,
-            subject: 'Help',
-            text: `
-                ${contact.name}
-                ${contact.email}
-                ${contact.number}
-                ${contact.assistance}
-            `
-        };
-        return transporter.sendMail(mail).then(() => {
-            return res.status('202').json({ mail });
-        }).catch(error => {
-            return res.status(400).json({ error });
-        });
+        return res.status(400).json({ error });
     }
 });
 

@@ -41,9 +41,15 @@ app.post('/contact', function (req, res) {
       var lastBracket = values.lastIndexOf('}') + 1;
       values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
       information = values;
+      return res.status(201).json({
+        success: true
+      });
     }
   } catch (_unused) {
     information = JSON.parse(Object.keys(req.body)[0]);
+    return res.status(202).json({
+      success: true
+    });
   }
 
   if (information) {
@@ -70,45 +76,17 @@ app.post('/contact', function (req, res) {
       text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
     };
     return transporter.sendMail(mail).then(function () {
-      return res.status('202').json({
+      return res.status('200').json({
         mail: mail
       });
     }).catch(function (error) {
-      return res.status(400).json({
+      return res.status(401).json({
         error: error
       });
     });
   } else {
-    var _transporter = _nodemailer.default.createTransport({
-      host: process.env.TRANSPORT_HOST,
-      port: process.env.TRANSPORT_PORT,
-      auth: {
-        user: process.env.TRANSPORT_USER,
-        pass: process.env.TRANSPORT_PASS
-      },
-      secure: true
-    });
-
-    var _contact = {
-      name: 'Julian Vila',
-      number: '1234567890',
-      email: 'viljaj46@gmail.com',
-      assistance: 'hey now'
-    };
-    var _mail = {
-      from: _contact.email,
-      to: process.env.TRANSPORT_USER,
-      subject: 'Help',
-      text: "\n                ".concat(_contact.name, "\n                ").concat(_contact.email, "\n                ").concat(_contact.number, "\n                ").concat(_contact.assistance, "\n            ")
-    };
-    return _transporter.sendMail(_mail).then(function () {
-      return res.status('202').json({
-        mail: _mail
-      });
-    }).catch(function (error) {
-      return res.status(400).json({
-        error: error
-      });
+    return res.status(400).json({
+      error: error
     });
   }
 });
