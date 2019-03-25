@@ -86,8 +86,14 @@ app.post('/contact', function (req, res) {
       });
     });
   } else {
-    return res.status(400).json({
-      error: error
+    var body = '';
+    req.on('data', function (chunk) {
+      body += chunk.toString();
+    });
+    req.on('end', function () {
+      return res.status(400).json({
+        body: body
+      });
     });
   }
 });
