@@ -34,16 +34,18 @@ app.post('/contact', function (req, res) {
   var information;
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 
-  if (Object.keys(req.body)[0].includes('WebKitForm')) {
-    var values = Object.values(req.body)[0];
-    var firstBracket = values.indexOf('{');
-    var lastBracket = values.lastIndexOf('}') + 1;
-    values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
-    information = values;
-  } // } else if (Object.keys(req.body).length > 0) {
-  //     information = JSON.parse(Object.keys(req.body)[0]);
-  // }
-
+  try {
+    if (Object.keys(req.body)[0].includes('WebKitForm')) {
+      var values = Object.values(req.body)[0];
+      var firstBracket = values.indexOf('{');
+      var lastBracket = values.lastIndexOf('}') + 1;
+      values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
+      information = values;
+    }
+  } catch (_unused) {
+    console.log(req.body);
+    information = JSON.parse(Object.keys(req.body)[0]);
+  }
 
   if (information) {
     var transporter = _nodemailer.default.createTransport({
@@ -70,7 +72,9 @@ app.post('/contact', function (req, res) {
     return transporter.sendMail(mail).then(function () {
       return res.status('200').end('Success!');
     }).catch(function (error) {
-      return res.status(400).end('Something went wrong.');
+      return res.status(400).json({
+        error: error
+      });
     });
   } else {
     return res.send('hety now youre a rockstart');

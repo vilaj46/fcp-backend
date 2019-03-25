@@ -25,17 +25,19 @@ app.get('/*', (req, res) => {
 app.post('/contact', (req, res) => {
     let information;
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-    
-    if (Object.keys(req.body)[0].includes('WebKitForm')) {
-        let values = Object.values(req.body)[0];
-        const firstBracket = values.indexOf('{');
-        const lastBracket = values.lastIndexOf('}') + 1;
-        values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
-        information = values
-    } 
-    // } else if (Object.keys(req.body).length > 0) {
-    //     information = JSON.parse(Object.keys(req.body)[0]);
-    // }
+    try {
+        if (Object.keys(req.body)[0].includes('WebKitForm')) {
+            let values = Object.values(req.body)[0];
+            const firstBracket = values.indexOf('{');
+            const lastBracket = values.lastIndexOf('}') + 1;
+            values = values.slice(firstBracket, lastBracket).replace(/\\/gi, '');
+            information = values
+        } 
+    }
+    catch {
+        console.log(req.body);
+        information = JSON.parse(Object.keys(req.body)[0]);
+    }
     
     if (information) {
         const transporter = nodemailer.createTransport({
@@ -69,7 +71,7 @@ app.post('/contact', (req, res) => {
         return transporter.sendMail(mail).then(() => {
             return res.status('200').end('Success!');
         }).catch(error => {
-            return res.status(400).end('Something went wrong.');
+            return res.status(400).json({ error });
         });
     } else {
         return res.send('hety now youre a rockstart');
