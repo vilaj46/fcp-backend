@@ -47,7 +47,13 @@ app.post('/contact', function (req, res) {
       });
     }
   } catch (_unused) {
-    information = JSON.parse(Object.keys(req.body)[0]);
+    information = {
+      name: req.body.name,
+      number: req.body.number,
+      email: req.body.email,
+      assistance: req.body.assistance,
+      honey: req.body.honey
+    };
     return res.status(202).json({
       success: true
     });
