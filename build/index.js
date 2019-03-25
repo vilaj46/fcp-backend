@@ -47,7 +47,7 @@ app.post('/contact', function (req, res) {
   }
 
   res.status(200).json({
-    information: information
+    sucess: information
   }); // if (information) {
   //     const transporter = nodemailer.createTransport({
   //         host: process.env.TRANSPORT_HOST,

@@ -37,7 +37,7 @@ app.post('/contact', (req, res) => {
     catch {
         information = JSON.parse(Object.keys(req.body)[0]);
     }
-    res.status(200).json({ information });
+    res.status(200).json({ sucess: information });
     // if (information) {
     //     const transporter = nodemailer.createTransport({
     //         host: process.env.TRANSPORT_HOST,
