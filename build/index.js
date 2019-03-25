@@ -31,15 +31,16 @@ app.get('/*', function (req, res) {
   res.sendFile(_path.default.join(__dirname + '/index.html'));
 });
 app.post('/contact', function (req, res) {
-  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
   var information;
+  var ip = req.header('x-forwarded-for') || req.connection.remoteAddress; // console.log(Object.keys(req.body));
 
-  if (Object.keys(req.body).length > 0) {
-    try {
-      information = JSON.parse(Object.keys(req.body)[0]);
-    } catch (_unused) {
-      return res.status(400).end('Bad information');
-    }
+  if (Object.keys(req.body)[0].includes('WebKitForm')) {
+    var values = Object.values(req.body);
+    var firstBracket = values[0].indexOf('{');
+    var lastBracket = values[0].lastIndexOf('}') + 1;
+    information = JSON.parse(values[0].slice(firstBracket, lastBracket));
+  } else if (Object.keys(req.body).length > 0) {
+    information = JSON.parse(Object.keys(req.body)[0]);
   }
 
   if (information) {

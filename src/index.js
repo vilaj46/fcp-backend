@@ -23,17 +23,18 @@ app.get('/*', (req, res) => {
 });
 
 app.post('/contact', (req, res) => {
-    const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
     let information;
+    const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+
     
-    if (Object.keys(req.body).length > 0) {
-        try {
-            information = JSON.parse(Object.keys(req.body)[0]);
-        }
-        catch {
-            return res.status(400).end('Bad information');
-        }
-        
+    // console.log(Object.keys(req.body));
+    if (Object.keys(req.body)[0].includes('WebKitForm')) {
+        const values = Object.values(req.body);
+        const firstBracket = values[0].indexOf('{');
+        const lastBracket = values[0].lastIndexOf('}') + 1;
+        information = JSON.parse(values[0].slice(firstBracket, lastBracket));
+    } else if (Object.keys(req.body).length > 0) {
+        information = JSON.parse(Object.keys(req.body)[0]);
     }
     
     if (information) {
@@ -71,7 +72,6 @@ app.post('/contact', (req, res) => {
             return res.status(400).end('Something went wrong.');
         });
     } else {
-
         return res.send('hety now youre a rockstart');
     }
 });
