@@ -43,36 +43,41 @@ app.post('/contact', function (req, res) {
     information = JSON.parse(Object.keys(req.body)[0]);
   }
 
-  if (information) {
-    var transporter = _nodemailer.default.createTransport({
-      host: process.env.TRANSPORT_HOST,
-      port: process.env.TRANSPORT_PORT,
-      auth: {
-        user: process.env.TRANSPORT_USER,
-        pass: process.env.TRANSPORT_PASS
-      }
-    });
-
-    var contact = {
-      name: req.sanitize(information.name),
-      number: req.sanitize(information.number),
-      email: req.sanitize(information.email),
-      assistance: req.sanitize(information.assistance)
-    };
-    var mail = {
-      from: contact.email,
-      to: process.env.TRANSPORT_USER,
-      subject: 'Help',
-      text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
-    };
-    return transporter.sendMail(mail).then(function () {
-      return res.status('200').end('Success!');
-    }).catch(function (error) {
-      return res.status(400).end('Something went wrong.');
-    });
-  } else {
-    return res.send('hety now youre a rockstart');
-  }
+  res.send(information); // return res.status('200').end();
+  // if (information) {
+  //     const transporter = nodemailer.createTransport({
+  //         host: process.env.TRANSPORT_HOST,
+  //         port: process.env.TRANSPORT_PORT,
+  //         auth: {
+  //             user: process.env.TRANSPORT_USER,
+  //             pass: process.env.TRANSPORT_PASS,
+  //         }
+  //     });
+  //     const contact = {
+  //         name: req.sanitize(information.name),
+  //         number: req.sanitize(information.number),
+  //         email: req.sanitize(information.email),
+  //         assistance: req.sanitize(information.assistance),
+  //     };
+  //     const mail = {
+  //         from: contact.email,
+  //         to: process.env.TRANSPORT_USER,
+  //         subject: 'Help',
+  //         text: `
+  //             ${contact.name}
+  //             ${contact.email}
+  //             ${contact.number}
+  //             ${contact.assistance}
+  //         `
+  //     };
+  //     return transporter.sendMail(mail).then(() => {
+  //         return res.status('200').end('Success!');
+  //     }).catch(error => {
+  //         return res.status(400).end('Something went wrong.');
+  //     });
+  // } else {
+  //     return res.send('hety now youre a rockstart');
+  // }
 });
 app.listen(process.env.PORT || 3000, function () {
   return console.log('Listening on port 3000!');
