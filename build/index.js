@@ -46,43 +46,65 @@ app.post('/contact', function (req, res) {
     information = JSON.parse(Object.keys(req.body)[0]);
   }
 
-  res.status(200).json({
-    sucess: information
-  }); // if (information) {
-  //     const transporter = nodemailer.createTransport({
-  //         host: process.env.TRANSPORT_HOST,
-  //         port: process.env.TRANSPORT_PORT,
-  //         auth: {
-  //             user: process.env.TRANSPORT_USER,
-  //             pass: process.env.TRANSPORT_PASS,
-  //         }, 
-  //         secure: true
-  //     });
-  //     const contact = {
-  //         name: req.sanitize(information.name),
-  //         number: req.sanitize(information.number),
-  //         email: req.sanitize(information.email),
-  //         assistance: req.sanitize(information.assistance),
-  //     };
-  //     const mail = {
-  //         from: contact.email,
-  //         to: process.env.TRANSPORT_USER,
-  //         subject: 'Help',
-  //         text: `
-  //             ${contact.name}
-  //             ${contact.email}
-  //             ${contact.number}
-  //             ${contact.assistance}
-  //         `
-  //     };
-  //     return transporter.sendMail(mail).then(() => {
-  //         return res.status('202').json({ mail });
-  //     }).catch(error => {
-  //         return res.status(400).json({ error });
-  //     });
-  // } else {
-  //     return res.status(400).json({ error });
-  // }
+  if (information) {
+    var transporter = _nodemailer.default.createTransport({
+      host: process.env.TRANSPORT_HOST,
+      port: process.env.TRANSPORT_PORT,
+      auth: {
+        user: process.env.TRANSPORT_USER,
+        pass: process.env.TRANSPORT_PASS
+      },
+      secure: true
+    });
+
+    var contact = {
+      name: req.sanitize(information.name),
+      number: req.sanitize(information.number),
+      email: req.sanitize(information.email),
+      assistance: req.sanitize(information.assistance)
+    };
+    var mail = {
+      from: contact.email,
+      to: process.env.TRANSPORT_USER,
+      subject: 'Help',
+      text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
+    };
+    return transporter.sendMail(mail).then(function () {
+      return res.status('202').json({
+        mail: mail
+      });
+    }).catch(function (error) {
+      return res.status(400).json({
+        error: error
+      });
+    });
+  } else {
+    var _transporter = _nodemailer.default.createTransport({
+      host: process.env.TRANSPORT_HOST,
+      port: process.env.TRANSPORT_PORT,
+      auth: {
+        user: process.env.TRANSPORT_USER,
+        pass: process.env.TRANSPORT_PASS
+      },
+      secure: true
+    });
+
+    var _contact = {
+      name: 'Julian Vila',
+      number: '1234567890',
+      email: 'viljaj46@gmail.com',
+      assistance: 'hey now'
+    };
+    var _mail = {
+      from: _contact.email,
+      to: process.env.TRANSPORT_USER,
+      subject: 'Help',
+      text: "\n                ".concat(_contact.name, "\n                ").concat(_contact.email, "\n                ").concat(_contact.number, "\n                ").concat(_contact.assistance, "\n            ")
+    };
+    return res.status(200).json({
+      sucess: true
+    });
+  }
 });
 app.listen(process.env.PORT || 3000, function () {
   return console.log('Listening on port 3000!');

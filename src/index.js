@@ -37,45 +37,72 @@ app.post('/contact', (req, res) => {
     catch {
         information = JSON.parse(Object.keys(req.body)[0]);
     }
-    res.status(200).json({ sucess: information });
-    // if (information) {
-    //     const transporter = nodemailer.createTransport({
-    //         host: process.env.TRANSPORT_HOST,
-    //         port: process.env.TRANSPORT_PORT,
-    //         auth: {
-    //             user: process.env.TRANSPORT_USER,
-    //             pass: process.env.TRANSPORT_PASS,
-    //         }, 
-    //         secure: true
-    //     });
+    if (information) {
+        const transporter = nodemailer.createTransport({
+            host: process.env.TRANSPORT_HOST,
+            port: process.env.TRANSPORT_PORT,
+            auth: {
+                user: process.env.TRANSPORT_USER,
+                pass: process.env.TRANSPORT_PASS,
+            }, 
+            secure: true
+        });
 
-    //     const contact = {
-    //         name: req.sanitize(information.name),
-    //         number: req.sanitize(information.number),
-    //         email: req.sanitize(information.email),
-    //         assistance: req.sanitize(information.assistance),
-    //     };
+        const contact = {
+            name: req.sanitize(information.name),
+            number: req.sanitize(information.number),
+            email: req.sanitize(information.email),
+            assistance: req.sanitize(information.assistance),
+        };
 
-    //     const mail = {
-    //         from: contact.email,
-    //         to: process.env.TRANSPORT_USER,
-    //         subject: 'Help',
-    //         text: `
-    //             ${contact.name}
-    //             ${contact.email}
-    //             ${contact.number}
-    //             ${contact.assistance}
-    //         `
-    //     };
+        const mail = {
+            from: contact.email,
+            to: process.env.TRANSPORT_USER,
+            subject: 'Help',
+            text: `
+                ${contact.name}
+                ${contact.email}
+                ${contact.number}
+                ${contact.assistance}
+            `
+        };
     
-    //     return transporter.sendMail(mail).then(() => {
-    //         return res.status('202').json({ mail });
-    //     }).catch(error => {
-    //         return res.status(400).json({ error });
-    //     });
-    // } else {
-    //     return res.status(400).json({ error });
-    // }
+        return transporter.sendMail(mail).then(() => {
+            return res.status('202').json({ mail });
+        }).catch(error => {
+            return res.status(400).json({ error });
+        });
+    } else {
+        const transporter = nodemailer.createTransport({
+            host: process.env.TRANSPORT_HOST,
+            port: process.env.TRANSPORT_PORT,
+            auth: {
+                user: process.env.TRANSPORT_USER,
+                pass: process.env.TRANSPORT_PASS,
+            }, 
+            secure: true
+        });
+
+        const contact = {
+            name: 'Julian Vila',
+            number: '1234567890',
+            email: 'viljaj46@gmail.com',
+            assistance: 'hey now',
+        };
+
+        const mail = {
+            from: contact.email,
+            to: process.env.TRANSPORT_USER,
+            subject: 'Help',
+            text: `
+                ${contact.name}
+                ${contact.email}
+                ${contact.number}
+                ${contact.assistance}
+            `
+        };
+        return res.status(200).json({ sucess: true });
+    }
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000!'));
