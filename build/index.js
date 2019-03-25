@@ -33,7 +33,9 @@ app.get('/*', function (req, res) {
 app.post('/contact', function (req, res) {
   var information;
   var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-  res.send(req.body); // if (Object.keys(req.body)[0].includes('WebKitForm')) {
+  res.status(200).json({
+    success: req.body
+  }); // if (Object.keys(req.body)[0].includes('WebKitForm')) {
   //     const values = Object.values(req.body);
   //     const firstBracket = values[0].indexOf('{');
   //     const lastBracket = values[0].lastIndexOf('}') + 1;

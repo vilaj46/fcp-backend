@@ -25,7 +25,7 @@ app.get('/*', (req, res) => {
 app.post('/contact', (req, res) => {
     let information;
     const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-    res.send(req.body);
+    res.status(200).json({ success: req.body });
     // if (Object.keys(req.body)[0].includes('WebKitForm')) {
     //     const values = Object.values(req.body);
     //     const firstBracket = values[0].indexOf('{');
