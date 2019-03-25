@@ -83,6 +83,15 @@ app.post('/contact', (req, res) => {
             return res.status(401).json({ error });
         });
     } else {
+        const transporter = nodemailer.createTransport({
+            host: process.env.TRANSPORT_HOST,
+            port: process.env.TRANSPORT_PORT,
+            auth: {
+                user: process.env.TRANSPORT_USER,
+                pass: process.env.TRANSPORT_PASS,
+            }, 
+            secure: true
+        });
         const contact = {
             name: req.sanitize(req.body.name),
             number: req.sanitize(req.body.number),
