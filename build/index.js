@@ -38,8 +38,9 @@ app.post('/contact', function (req, res) {
     var values = Object.values(req.body)[0];
     var firstBracket = values.indexOf('{');
     var lastBracket = values.lastIndexOf('}') + 1;
+    values = JSON.parse(values.slice(firstBracket, lastBracket).replace('\\', ''));
     res.status(200).json({
-      success: JSON.parse(values.slice(firstBracket, lastBracket))
+      success: values
     }); // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
   } // } else if (Object.keys(req.body).length > 0) {
   //     information = JSON.parse(Object.keys(req.body)[0]);

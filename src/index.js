@@ -28,10 +28,12 @@ app.post('/contact', (req, res) => {
     
     if (Object.keys(req.body)[0].includes('WebKitForm')) {
         
-        const values = Object.values(req.body)[0];
+        let values = Object.values(req.body)[0];
         const firstBracket = values.indexOf('{');
         const lastBracket = values.lastIndexOf('}') + 1;
-        res.status(200).json({ success: JSON.parse(values.slice(firstBracket, lastBracket)) });
+        values = JSON.parse(values.slice(firstBracket, lastBracket).replace('\\', ''));
+
+        res.status(200).json({ success: values });
         // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
     }
     // } else if (Object.keys(req.body).length > 0) {
