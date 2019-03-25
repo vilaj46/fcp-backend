@@ -59,6 +59,8 @@ app.post('/contact', function (req, res) {
     });
   }
 
+  console.log(information);
+
   if (information) {
     var transporter = _nodemailer.default.createTransport({
       host: process.env.TRANSPORT_HOST,
@@ -92,7 +94,6 @@ app.post('/contact', function (req, res) {
       });
     });
   } else {
-    console.log(req.body);
     return res.status(400).json({
       body: req.body
     });
