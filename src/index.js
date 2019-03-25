@@ -74,7 +74,7 @@ app.post('/contact', (req, res) => {
             return res.status(400).json({ error });
         });
     } else {
-        return res.send('hety now youre a rockstart');
+        return res.status(400).json({ error });
     }
 });
 

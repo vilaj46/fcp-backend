@@ -79,7 +79,9 @@ app.post('/contact', function (req, res) {
       });
     });
   } else {
-    return res.send('hety now youre a rockstart');
+    return res.status(400).json({
+      error: error
+    });
   }
 });
 app.listen(process.env.PORT || 3000, function () {
