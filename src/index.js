@@ -35,7 +35,6 @@ app.post('/contact', (req, res) => {
         } 
     }
     catch {
-        console.log(req.body);
         information = JSON.parse(Object.keys(req.body)[0]);
     }
     
@@ -70,7 +69,7 @@ app.post('/contact', (req, res) => {
         };
     
         return transporter.sendMail(mail).then(() => {
-            return res.status('200').end('Success!');
+            return res.status('200').json({ mail });
         }).catch(error => {
             return res.status(400).json({ error });
         });

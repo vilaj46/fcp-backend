@@ -43,7 +43,6 @@ app.post('/contact', function (req, res) {
       information = values;
     }
   } catch (_unused) {
-    console.log(req.body);
     information = JSON.parse(Object.keys(req.body)[0]);
   }
 
@@ -71,7 +70,9 @@ app.post('/contact', function (req, res) {
       text: "\n                ".concat(contact.name, "\n                ").concat(contact.email, "\n                ").concat(contact.number, "\n                ").concat(contact.assistance, "\n            ")
     };
     return transporter.sendMail(mail).then(function () {
-      return res.status('200').end('Success!');
+      return res.status('200').json({
+        mail: mail
+      });
     }).catch(function (error) {
       return res.status(400).json({
         error: error
