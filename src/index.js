@@ -31,7 +31,7 @@ app.post('/contact', (req, res) => {
         const values = Object.values(req.body)[0];
         const firstBracket = values.indexOf('{');
         const lastBracket = values.lastIndexOf('}') + 1;
-        res.status(200).json({ success: values[0].slice(firstBracket, lastBracket) });
+        res.status(200).json({ success: values[0].slice(firstBracket) });
         // information = JSON.parse(values[0].slice(firstBracket, lastBracket));
     }
     // } else if (Object.keys(req.body).length > 0) {
