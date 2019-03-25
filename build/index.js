@@ -54,7 +54,8 @@ app.post('/contact', function (req, res) {
       auth: {
         user: process.env.TRANSPORT_USER,
         pass: process.env.TRANSPORT_PASS
-      }
+      },
+      secure: true
     });
 
     var contact = {

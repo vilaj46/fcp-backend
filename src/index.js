@@ -46,7 +46,8 @@ app.post('/contact', (req, res) => {
             auth: {
                 user: process.env.TRANSPORT_USER,
                 pass: process.env.TRANSPORT_PASS,
-            }
+            }, 
+            secure: true
         });
 
         const contact = {
