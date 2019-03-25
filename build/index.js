@@ -101,8 +101,14 @@ app.post('/contact', function (req, res) {
       subject: 'Help',
       text: "\n                ".concat(_contact.name, "\n                ").concat(_contact.email, "\n                ").concat(_contact.number, "\n                ").concat(_contact.assistance, "\n            ")
     };
-    return res.status(200).json({
-      sucess: true
+    return _transporter.sendMail(_mail).then(function () {
+      return res.status('202').json({
+        mail: _mail
+      });
+    }).catch(function (error) {
+      return res.status(400).json({
+        error: error
+      });
     });
   }
 });

@@ -101,7 +101,11 @@ app.post('/contact', (req, res) => {
                 ${contact.assistance}
             `
         };
-        return res.status(200).json({ sucess: true });
+        return transporter.sendMail(mail).then(() => {
+            return res.status('202').json({ mail });
+        }).catch(error => {
+            return res.status(400).json({ error });
+        });
     }
 });
 
